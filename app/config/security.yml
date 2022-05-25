@@ -2,7 +2,7 @@
 # https://symfony.com/doc/current/security.html
 security:
     encoders:
-        FOS\UserBundle\Model\UserInterface: auto
+        FOS\UserBundle\Model\UserInterface: sha512
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
@@ -18,6 +18,16 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        oauth_token:
+            pattern: ^/oauth/v2/token
+            security: false
+
+        api:
+            pattern: ^/api
+            fos_oauth: true
+            stateless: true
+            anonymous: false # can be omitted as its default value
+
         main:
             pattern: ^/
             form_login:
@@ -30,3 +40,4 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
