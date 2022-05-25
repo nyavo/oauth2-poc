@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=oauth2
+      - MYSQL_DATABASE=oauth2
+      - MYSQL_USER=oauth2
+    ports:
+      - 3306:3306
+  web:
+    build: apache
+    volumes:
+      - ../:/var/www
+      - ./apache/apache.conf:/etc/apache2/sites-enabled/000-default.conf
+    ports:
+      - 8080:80
